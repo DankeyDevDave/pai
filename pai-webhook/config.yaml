@@ -1,0 +1,44 @@
+# PAI Webhook Bridge Configuration
+# Copy this file and update with your actual credentials
+
+# MQTT broker settings
+mqtt:
+  host: "mqtt.example.com"
+  port: 1883
+  username: "your_mqtt_username"
+  password: "your_mqtt_password"
+  client_id: "pai-webhook-bridge"
+  qos: 1
+  clean_session: true
+  keepalive: 60
+  # List of topics to subscribe to
+  topics:
+    - "paradox/#"
+    # - "paradox/states/#"
+    # - "paradox/events/#"
+
+# Webhook endpoint settings
+webhook:
+  # Required: URL to send webhook payloads to
+  url: "https://your-webhook-endpoint.example.com/api/pai"
+  # HTTP timeout in seconds
+  timeout: 30.0
+  # Maximum retry attempts before dropping message
+  max_attempts: 5
+  # Exponential backoff base (delay = backoff_base^(attempt-1) + random 0-1s)
+  backoff_base: 2.0
+  # Additional headers (Content-Type is always set to application/json)
+  headers:
+    # Authorization: "Bearer your-token-here"
+    # X-Custom-Header: "custom-value"
+
+# Health check server settings
+health:
+  host: "0.0.0.0"
+  port: 8080
+
+# Queue settings
+queue_maxsize: 10000
+
+# Drain timeout in seconds during shutdown
+drain_timeout: 30.0

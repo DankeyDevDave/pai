@@ -1,0 +1,38 @@
+# PAI Webhook Bridge - Docker Compose
+#
+# Usage:
+#   docker-compose up -d
+#
+# Make sure to configure config.yaml with your actual credentials
+# before starting the service.
+
+version: "3.8"
+
+services:
+  pai-webhook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pai-webhook-bridge
+    restart: unless-stopped
+    volumes:
+      # Mount configuration file
+      - ./config.yaml:/app/config.yaml:ro
+    ports:
+      # Health check endpoint
+      - "8080:8080"
+    environment:
+      # Override config path if needed
+      - PAI_WEBHOOK_CONFIG=/app/config.yaml
+    # No depends_on for MQTT - service should handle connection retries
+    # healthcheck:
+    #   test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
