@@ -1,0 +1,27 @@
+mqtt:
+  host: "<mqtt-broker-host>"
+  port: 1883
+  username: "<mqtt-username>"
+  password: "<mqtt-password>"
+  client_id: pai-webhook
+  qos: 1
+  clean_session: true
+  topics:
+    - "paradox/states/#"
+    - "paradox/events/#"
+    # - "paradox/interface/#"     # connection status
+
+webhook:
+  url: "https://your-endpoint.example.com/alarm"
+  headers:
+    Authorization: "Bearer <your-token>"
+  timeout: 10
+  retry:
+    max_attempts: 3
+    backoff_base: 2
+
+health:
+  port: 8080
+
+logging:
+  level: INFO
